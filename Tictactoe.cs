@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace TestProject
 {
@@ -98,7 +98,7 @@ namespace TestProject
                     if (board[i, j] == 0)
                     {
                         board[i, j] = 2;
-                        int score = Minimax(board, 0, false);
+                        int score = Minimax(board, 0, false, -1000, 1000);
                         board[i, j] = 0;
                         if (score > bestScore)
                         {
@@ -135,7 +135,7 @@ namespace TestProject
             }
             return 0;
         }
-        public static int Minimax(int[,] board, int depth, bool IsMaximizing)
+        public static int Minimax(int[,] board, int depth, bool IsMaximizing, int alpha, int beta)
         {
             IsOver();
             if (result != -1)
@@ -153,11 +153,19 @@ namespace TestProject
                         if (board[i, j] == 0)
                         {
                             board[i, j] = 2;
-                            int score = Minimax(board, depth + 1, false);
+                            int score = Minimax(board, depth + 1, false, alpha, beta);
                             board[i, j] = 0;
                             if (score > bestScore)
                             {
                                 bestScore = score;
+                            }
+                            if (bestScore > alpha)
+                            {
+                                alpha = bestScore;
+                            }
+                            if (beta <= alpha)
+                            {
+                                break;
                             }
                         }
 
@@ -175,11 +183,19 @@ namespace TestProject
                         if (board[i, j] == 0)
                         {
                             board[i, j] = 1;
-                            int score = Minimax(board, depth + 1, true);
+                            int score = Minimax(board, depth + 1, true, alpha, beta);
                             board[i, j] = 0;
                             if (score < bestScore)
                             {
                                 bestScore = score;
+                            }
+                            if (bestScore < beta)
+                            {
+                                beta = bestScore;
+                            }
+                            if (beta <= alpha)
+                            {
+                                break;
                             }
                         }
 
